@@ -47,7 +47,7 @@ class Memory:
         if metadata:
             payload["metadata"] = metadata
 
-        resp = self._client.post("/v1/memories/", json=payload)
+        resp = self._client.post("/v1/memory/", json=payload)
         resp.raise_for_status()
         return resp.json()
 
@@ -66,7 +66,7 @@ class Memory:
             limit: Max results
         """
         resp = self._client.post(
-            "/v1/memories/search/",
+            "/v1/memory/search/",
             json={"query": query, "user_id": user_id, "limit": limit},
         )
         resp.raise_for_status()
@@ -74,25 +74,25 @@ class Memory:
 
     def list(self, user_id: str) -> list[dict]:
         """Get all memories for a user."""
-        resp = self._client.get("/v1/memories/", params={"user_id": user_id})
+        resp = self._client.get("/v1/memory/", params={"user_id": user_id})
         resp.raise_for_status()
         return resp.json().get("results", [])
 
     def get(self, memory_id: str) -> dict:
         """Get a specific memory by ID."""
-        resp = self._client.get(f"/v1/memories/{memory_id}/")
+        resp = self._client.get(f"/v1/memory/{memory_id}/")
         resp.raise_for_status()
         return resp.json()
 
     def delete(self, memory_id: str) -> dict:
         """Delete a memory."""
-        resp = self._client.delete(f"/v1/memories/{memory_id}/")
+        resp = self._client.delete(f"/v1/memory/{memory_id}/")
         resp.raise_for_status()
         return resp.json()
 
     def delete_all(self, user_id: str) -> dict:
         """Delete all memories for a user."""
-        resp = self._client.delete("/v1/memories/", params={"user_id": user_id})
+        resp = self._client.delete("/v1/memory/", params={"user_id": user_id})
         resp.raise_for_status()
         return resp.json()
 
@@ -119,7 +119,7 @@ class AsyncMemory:
         if metadata:
             payload["metadata"] = metadata
 
-        resp = await self._client.post("/v1/memories/", json=payload)
+        resp = await self._client.post("/v1/memory/", json=payload)
         resp.raise_for_status()
         return resp.json()
 
@@ -131,28 +131,28 @@ class AsyncMemory:
         limit: int = 10,
     ) -> list[dict]:
         resp = await self._client.post(
-            "/v1/memories/search/",
+            "/v1/memory/search/",
             json={"query": query, "user_id": user_id, "limit": limit},
         )
         resp.raise_for_status()
         return resp.json().get("results", [])
 
     async def list(self, user_id: str) -> list[dict]:
-        resp = await self._client.get("/v1/memories/", params={"user_id": user_id})
+        resp = await self._client.get("/v1/memory/", params={"user_id": user_id})
         resp.raise_for_status()
         return resp.json().get("results", [])
 
     async def get(self, memory_id: str) -> dict:
-        resp = await self._client.get(f"/v1/memories/{memory_id}/")
+        resp = await self._client.get(f"/v1/memory/{memory_id}/")
         resp.raise_for_status()
         return resp.json()
 
     async def delete(self, memory_id: str) -> dict:
-        resp = await self._client.delete(f"/v1/memories/{memory_id}/")
+        resp = await self._client.delete(f"/v1/memory/{memory_id}/")
         resp.raise_for_status()
         return resp.json()
 
     async def delete_all(self, user_id: str) -> dict:
-        resp = await self._client.delete("/v1/memories/", params={"user_id": user_id})
+        resp = await self._client.delete("/v1/memory/", params={"user_id": user_id})
         resp.raise_for_status()
         return resp.json()
