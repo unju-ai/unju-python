@@ -42,6 +42,7 @@ Homepage = "https://unju.ai"
 Documentation = "https://docs.unju.ai/sdk/python"
 Repository = "https://github.com/unju-ai/unju-python"
 Issues = "https://github.com/unju-ai/unju-python/issues"
+Changelog = "https://github.com/unju-ai/unju-python/blob/main/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
 packages = ["unju"]

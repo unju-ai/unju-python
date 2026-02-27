@@ -14,13 +14,14 @@ import httpx
 class Agents:
     """Synchronous agents client."""
 
-    def __init__(self, client: httpx.Client):
+    def __init__(self, client: httpx.Client, *, api_version: str = "v1"):
         self._client = client
+        self._v = api_version
 
     def list(self, *, include_coming_soon: bool = True) -> list[dict]:
         """List all available agents."""
         resp = self._client.get(
-            "/v1/agents",
+            f"/{self._v}/agents",
             params={"include_coming_soon": str(include_coming_soon).lower()},
         )
         resp.raise_for_status()
@@ -28,7 +29,7 @@ class Agents:
 
     def get(self, agent_id: str) -> dict:
         """Get agent details."""
-        resp = self._client.get(f"/v1/agents/{agent_id}")
+        resp = self._client.get(f"/{self._v}/agents/{agent_id}")
         resp.raise_for_status()
         return resp.json()
 
@@ -50,12 +51,15 @@ class Agents:
         if metadata:
             payload["metadata"] = metadata
 
-        resp = self._client.post("/v1/agents/connect", json=payload)
+        resp = self._client.post(f"/{self._v}/agents/connect", json=payload)
         resp.raise_for_status()
         return resp.json()
 
     def card(self, agent_id: str) -> dict:
-        """Get an agent's A2A Agent Card."""
+        """Get an agent's A2A Agent Card.
+
+        Note: Uses the well-known path (not versioned).
+        """
         resp = self._client.get(
             "/.well-known/agent.json",
             params={"agent": agent_id},
@@ -65,7 +69,7 @@ class Agents:
 
     def trust(self, agent_id: str) -> dict:
         """Get an agent's trust score and reviews."""
-        resp = self._client.get(f"/v1/agents/{agent_id}/trust")
+        resp = self._client.get(f"/{self._v}/agents/{agent_id}/trust")
         resp.raise_for_status()
         return resp.json()
 
@@ -73,19 +77,20 @@ class Agents:
 class AsyncAgents:
     """Async agents client."""
 
-    def __init__(self, client: httpx.AsyncClient):
+    def __init__(self, client: httpx.AsyncClient, *, api_version: str = "v1"):
         self._client = client
+        self._v = api_version
 
     async def list(self, *, include_coming_soon: bool = True) -> list[dict]:
         resp = await self._client.get(
-            "/v1/agents",
+            f"/{self._v}/agents",
             params={"include_coming_soon": str(include_coming_soon).lower()},
         )
         resp.raise_for_status()
         return resp.json().get("agents", [])
 
     async def get(self, agent_id: str) -> dict:
-        resp = await self._client.get(f"/v1/agents/{agent_id}")
+        resp = await self._client.get(f"/{self._v}/agents/{agent_id}")
         resp.raise_for_status()
         return resp.json()
 
@@ -102,11 +107,15 @@ class AsyncAgents:
         if metadata:
             payload["metadata"] = metadata
 
-        resp = await self._client.post("/v1/agents/connect", json=payload)
+        resp = await self._client.post(f"/{self._v}/agents/connect", json=payload)
         resp.raise_for_status()
         return resp.json()
 
     async def card(self, agent_id: str) -> dict:
+        """Get an agent's A2A Agent Card.
+
+        Note: Uses the well-known path (not versioned).
+        """
         resp = await self._client.get(
             "/.well-known/agent.json",
             params={"agent": agent_id},
@@ -115,6 +124,6 @@ class AsyncAgents:
         return resp.json()
 
     async def trust(self, agent_id: str) -> dict:
-        resp = await self._client.get(f"/v1/agents/{agent_id}/trust")
+        resp = await self._client.get(f"/{self._v}/agents/{agent_id}/trust")
         resp.raise_for_status()
         return resp.json()
