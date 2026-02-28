@@ -119,7 +119,20 @@ unju = Unju(api_key="key", base_url="https://your-instance.com")
 
 # Custom timeout
 unju = Unju(api_key="key", timeout=60.0)
+
+# Pin API version (future-proofing — default is "v1")
+unju = Unju(api_key="key", api_version="v1")
 ```
+
+## Versioning & Deprecations
+
+This SDK follows [Semantic Versioning](https://semver.org/).
+
+- **Breaking changes** are reserved for major version bumps (`1.0.0`, `2.0.0`, …).
+- While in `v0.x.x` (pre-1.0 alpha), minor versions may include breaking changes — these are always called out in the [CHANGELOG](CHANGELOG.md).
+- Deprecated features emit a `DeprecationWarning` and are removed no sooner than the next minor release.
+
+See [CHANGELOG.md](CHANGELOG.md) for the full history.
 
 ## License
 
