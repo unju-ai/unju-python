@@ -32,3 +32,7 @@ from unju.client import Unju, AsyncUnju
 from unju.memory import Memory
 from unju.agents import Agents
 from unju.credits import Credits
+
+# LiveKit extras — lazy import to avoid hard dependency
+# Use: from unju.livekit import LLM, STT, TTS, RealtimeModel
+# Requires: pip install unju[livekit]
